@@ -1,7 +1,7 @@
 wallet
 =====
 
-An OTP application
+A Synthetic Benchmark for Commander
 
 Build
 -----
