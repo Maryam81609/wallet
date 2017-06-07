@@ -1,7 +1,7 @@
 -module(wallet).
 
 %% API
--export([credit/4, debit/4, transfer/5]).
+-export([credit/4, debit/4, transfer/5, get_val/3]).
 
 -include_lib("eunit/include/eunit.hrl").
 
@@ -46,3 +46,9 @@ transfer(Node, FromWallet, ToWallet, Amount, ST) ->
   {ok, CT} = rpc:call(Node, antidote, commit_transaction, [TxTrnsfr]),
 %%  lager:info("Txn with ID: ~p committed on Node: ~p", [TxTrnsfr, Node]),
   CT.
+
+get_val(Node, Wallet, Clock) ->
+    {ok, Tx} = rpc:call(Node, antidote, start_transaction, [Clock, []]),
+    {ok, [Res]} = rpc:call(Node, antidote, read_objects, [[Wallet], Tx]),
+    {ok, _CT1} = rpc:call(Node, antidote, commit_transaction, [Tx]),
+    Res.
